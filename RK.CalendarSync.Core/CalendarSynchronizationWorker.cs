@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
+using NLog;
 using RK.CalendarSync.Core.Calendars;
 using RK.CalendarSync.Core.Configuration.Synchronization;
 using RK.CalendarSync.Core.Synchronization;
@@ -8,6 +10,11 @@ namespace RK.CalendarSync.Core
 {
     internal class CalendarSynchronizationWorker : ICalendarSynchronizationWorker
     {
+        /// <summary>
+        /// Logger for the class
+        /// </summary>
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// If we fail to sync, wait 10 minutes before retrying.
         /// </summary>
@@ -65,6 +72,12 @@ namespace RK.CalendarSync.Core
                 {
                     break;
                 }
+
+                // Log that we're synchronizing
+                var infoLog = new LogEventInfo(LogLevel.Info, LOGGER.Name, "Attempting to synchronize calendar");
+                infoLog.Properties.Add("SourceCalendarId", _synchronizationConfiguration.SourceCalendarConfigurationId);
+                infoLog.Properties.Add("DestinationCalendarId", _synchronizationConfiguration.DestinationCalendarConfigurationId);
+                LOGGER.Log(infoLog);
 
                 // If the sync succeeds, determine how long to wait and write the success time back to disk.
                 var attemptedSyncTime = DateTimeOffset.Now;
@@ -135,6 +148,8 @@ namespace RK.CalendarSync.Core
                 sourceCalendarEvents,
                 destinationCalendarEvents);
 
+            LogSynchronizedEvents(synchronizedEvents);
+
             if (_stopRequested)
             {
                 return false;
@@ -165,6 +180,34 @@ namespace RK.CalendarSync.Core
             _synchronizationConfiguration.LastSyncAheadDate = syncEventEndDate;
 
             return true;
+        }
+
+
+        /// <summary>
+        /// Log synchronized event lists.
+        /// </summary>
+        /// <param name="synchronizedEventLists"></param>
+        private void LogSynchronizedEvents(SynchronizedEventLists synchronizedEventLists)
+        {
+            var infoLog = new LogEventInfo(LogLevel.Info, LOGGER.Name, "Synchronized event lists");
+            infoLog.Properties.Add("SourceCalendarId", _synchronizationConfiguration.SourceCalendarConfigurationId);
+            infoLog.Properties.Add("DestinationCalendarId", _synchronizationConfiguration.DestinationCalendarConfigurationId);
+
+            infoLog.Properties.Add("SourceEntriesMarkedForCreation",
+                                   synchronizedEventLists.SourceEventList.Count(e => e.CreateOnSync));
+            infoLog.Properties.Add("SourceEntriesMarkedForDeletion",
+                                   synchronizedEventLists.SourceEventList.Count(e => e.DeleteOnSync));
+            infoLog.Properties.Add("SourceEntriesMarkedForUndelete",
+                                   synchronizedEventLists.SourceEventList.Count(e => e.UnDeleteOnSync));
+
+            infoLog.Properties.Add("DestinationEntriesMarkedForCreation",
+                                   synchronizedEventLists.DestinationEventList.Count(e => e.CreateOnSync));
+            infoLog.Properties.Add("DestinationEntriesMarkedForDeletion",
+                                   synchronizedEventLists.DestinationEventList.Count(e => e.DeleteOnSync));
+            infoLog.Properties.Add("DestinationEntriesMarkedForUndelete",
+                                   synchronizedEventLists.DestinationEventList.Count(e => e.UnDeleteOnSync));
+
+            LOGGER.Log(infoLog);
         }
     }
 }

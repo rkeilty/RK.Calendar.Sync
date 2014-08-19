@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using NLog;
 using RK.CalendarSync.Core.Configuration.Calendars;
 using RK.CalendarSync.Core.Configuration.Services;
 using RK.CalendarSync.Core.Configuration.Synchronization;
@@ -10,6 +11,10 @@ namespace RK.CalendarSync.Core
 {
     public class CalendarSyncService : ICalendarSyncService
     {
+        /// <summary>
+        /// Logger for the class
+        /// </summary>
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         private const int DEFAULT_MILLISECOND_WAIT_TIME_FOR_THREAD_STOP_ON_SHUTDOWN = 10000;
 
         private readonly ICalendarConfigurationRetriever _calendarConfigurationRetriever;
@@ -57,6 +62,9 @@ namespace RK.CalendarSync.Core
         /// </summary>
         public void Start()
         {
+            // Synchronization service stopped successfully.
+            LOGGER.Info("Starting all background synchronization services.");
+
             // Get the calendar configurations
             var calendarConfigs =_calendarConfigurationRetriever.GetCalendarConfigurations();
 
@@ -87,6 +95,9 @@ namespace RK.CalendarSync.Core
             // Start the sync-saver thread
             _syncConfigSaveThread = new Thread(SaveSynchronizationWorker);
             _syncConfigSaveThread.Start();
+
+            // Synchronization service started successfully.
+            LOGGER.Info("Started all background synchronization services.");
         }
 
 
@@ -95,6 +106,9 @@ namespace RK.CalendarSync.Core
         /// </summary>
         public void Stop()
         {
+            // Synchronization service stopped successfully.
+            LOGGER.Info("Stopping all background synchronization services.");
+
             _stopRequested = true;
 
             // Iterate over each of our workers and tell them to stop
@@ -122,6 +136,9 @@ namespace RK.CalendarSync.Core
             {
                 _syncConfigSaveThread.Abort();
             }
+
+            // Synchronization service stopped successfully.
+            LOGGER.Info("Stopped all background synchronization services.");
         }
 
         /// <summary>
@@ -133,7 +150,11 @@ namespace RK.CalendarSync.Core
             while (!_stopRequested)
             {
                 _saveSynchronizationConfigurationsEvent.WaitOne(Timeout.Infinite);
-                SaveSynhronizationConfigurations();
+
+                // Synchronization service stopped successfully.
+                LOGGER.Info("Synchronization save triggered.");
+
+                SaveSynchronizationConfigurations();
             }
         }
 
@@ -141,7 +162,7 @@ namespace RK.CalendarSync.Core
         /// <summary>
         /// Given a specific configuration, save it to our backing store.
         /// </summary>
-        public void SaveSynhronizationConfigurations()
+        public void SaveSynchronizationConfigurations()
         {
             // Retrieve all of the current synchronization configurations.
             var existingSyncConfigs = _syncWorkers.Select(s => s.SynchronizationConfiguration).ToList();

@@ -37,10 +37,11 @@
   <ItemGroup>
     <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\Microsoft.Exchange.WebServices.dll</HintPath>
+      <HintPath>..\lib\Microsoft.Exchange.WebServices.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Exchange.WebServices.Auth">
-      <HintPath>..\bin\Microsoft.Exchange.WebServices.Auth.dll</HintPath>
+      <HintPath>..\lib\Microsoft.Exchange.WebServices.Auth.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\nuget-packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
