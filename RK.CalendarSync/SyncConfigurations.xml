@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Sample sync configuration file-->
+<!--
+  <SourceCalendarConfigurationId>GUID for source calendar as defined in CalendarConfigurations.xml</SourceCalendarConfigurationId>
+  <DestinationCalendarConfigurationId>GUID for destination calendar as defined in CalendarConfigurations.xml</DestinationCalendarConfigurationId>
+  <DaysInPastToSync>Number of days behind the current date to sync</DaysInPastToSync>
+  <DaysInFutureToSync>Number of days in the future to sync, you should probably make this 14 or more to avoid some weird sync issues.</DaysInFutureToSync>
+  <SynchronizationType>Synchronization directions (OneWay_SourceToDestination, OneWay_DestinationToSource, BiDirectional)</SynchronizationType>
+  <MinutesBetweenSynchronization>How long between syncs</MinutesBetweenSynchronization>
+  <LastSynchronization>Written to by application, when the last sync occurred.</LastSynchronization>
+  <LastSyncBehindDate>Written to by application, date the last sync went back to</LastSyncBehindDate>
+  <LastSyncAheadDate>Written to by application, date the last sync went forward to</LastSyncAheadDate>
+-->
+<SynchronizationConfigurations>
+  <SynchronizationConfiguration>
+    <SourceCalendarConfigurationId>BADF000B-DCEA-4793-9223-28D329350BF1</SourceCalendarConfigurationId>
+    <DestinationCalendarConfigurationId>EDCEE0FF-C51A-4667-9876-498AA7C99B2E</DestinationCalendarConfigurationId>
+    <DaysInPastToSync>2</DaysInPastToSync>
+    <DaysInFutureToSync>30</DaysInFutureToSync>
+    <SynchronizationType>OneWay_SourceToDestination</SynchronizationType>
+    <MinutesBetweenSynchronization>15</MinutesBetweenSynchronization>
+    <LastSynchronization></LastSynchronization>
+    <LastSyncBehindDate></LastSyncBehindDate>
+    <LastSyncAheadDate></LastSyncAheadDate>
+  </SynchronizationConfiguration>
+</SynchronizationConfigurations>

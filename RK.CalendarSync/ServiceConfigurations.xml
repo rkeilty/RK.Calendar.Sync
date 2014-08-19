@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Sample service configuration file, defines any service level attributes that are required-->
+<ServiceConfigurations>
+  <!--Google requires you have a Google Developer Console project with appropriate client API ID/Secrets-->
+  <!--See https://console.developers.google.com/project-->
+  <GoogleServiceConfiguration>
+    <ApiClientId>861861534834-0pkfejislfj38o2f8j328oq9e8qskoahoh6cuvhhm5j.apps.googleusercontent.com</ApiClientId>
+    <ApiClientSecret>feSujusfijelSDfd8932DM6sR_pDDqYBO</ApiClientSecret>
+  </GoogleServiceConfiguration>
+</ServiceConfigurations>

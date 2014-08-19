@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Sample calendar configuration file, defines the various calendars that you might want to sync between-->
+<CalendarConfigurations>
+  <GoogleCalendarConfiguration>
+    <CalendarConfigurationId>EDCEE0FF-C51A-4667-9876-498AA7C99B2E</CalendarConfigurationId>
+    <UserName>john.doe@gmail.com</UserName>
+    <CalendarId>fiel23fili3fjl23if2l3@group.calendar.google.com</CalendarId>
+  </GoogleCalendarConfiguration>
+  <ExchangeCalendarConfiguration>
+    <CalendarConfigurationId>BADF000B-DCEA-4793-9223-28D329350BF1</CalendarConfigurationId>
+    <UserName>john.doe@exchange.net</UserName>
+    <Password></Password>
+    <UseDomainCredentials>true</UseDomainCredentials>
+    <Endpoint>https://webmail.exchange.net/ews/exchange.asmx</Endpoint>
+    <ExchangeVersion>Exchange2010</ExchangeVersion>
+  </ExchangeCalendarConfiguration>
+</CalendarConfigurations>

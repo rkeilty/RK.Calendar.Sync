@@ -126,7 +126,14 @@ namespace RK.CalendarSync
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
-            LOGGER.Log(LogLevel.Error, "Unexpected application exception.", args.ExceptionObject);
+            var exception = args.ExceptionObject as Exception;
+            if (exception == null)
+            {
+                LOGGER.Log(LogLevel.Error, "Unexpected application exception, unable to cast to exception object.");
+                return;
+            }
+
+            LOGGER.Log(LogLevel.Error, "Unexpected application exception", exception);
         }
     }
 }

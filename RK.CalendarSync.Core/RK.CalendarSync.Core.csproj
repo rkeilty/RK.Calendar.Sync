@@ -108,11 +108,11 @@
     </Reference>
     <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\Microsoft.Exchange.WebServices.dll</HintPath>
+      <HintPath>..\lib\Microsoft.Exchange.WebServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Exchange.WebServices.Auth">
-      <HintPath>..\bin\Microsoft.Exchange.WebServices.Auth.dll</HintPath>
+      <HintPath>..\lib\Microsoft.Exchange.WebServices.Auth.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\nuget-packages\Microsoft.Bcl.Async.1.0.16\lib\net45\Microsoft.Threading.Tasks.dll</HintPath>
