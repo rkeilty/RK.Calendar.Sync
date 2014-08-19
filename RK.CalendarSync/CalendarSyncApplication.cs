@@ -20,8 +20,17 @@ namespace RK.CalendarSync
         {
             if (args.Length > 0 && (args[0].Equals("--console") || args[0].Equals("-c")))
             {
+                // Command line given, display console
+                AllocConsole();
                 var service = new CalendarSyncService();
                 service.Start();
+
+                // Spin until a "q" is pressed in the console.
+                Console.WriteLine("Press 'q' to quit application");
+                while (Console.ReadKey().Key != ConsoleKey.Q)
+                { }
+
+                service.Stop();
             }
             else
             {
@@ -118,12 +127,21 @@ namespace RK.CalendarSync
 
             base.Dispose(isDisposing);
         }
-
+        /// <summary>
+        /// Log any unhandled applications thrown from a thread.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs args)
         {
             LOGGER.Log(LogLevel.Error, "Unexpected thread exception.", args.Exception);
         }
 
+        /// <summary>
+        /// Log any unhandled exceptions from the application.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
             var exception = args.ExceptionObject as Exception;
@@ -135,5 +153,13 @@ namespace RK.CalendarSync
 
             LOGGER.Log(LogLevel.Error, "Unexpected application exception", exception);
         }
+
+
+        /// <summary>
+        /// Useful when we want to invoke our application via a command line argument like "-c" or "--console"
+        /// </summary>
+        /// <returns></returns>
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern bool AllocConsole();
     }
 }
