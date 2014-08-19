@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EFA05A49-D97D-4393-9DC1-7448AE9A61B1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RK.CalendarSync.Core</RootNamespace>
+    <AssemblyName>RK.CalendarSync.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="CalendarSynchronizationWorker.cs" />
+    <Compile Include="CalendarSynchronizationWorkerFactory.cs" />
+    <Compile Include="CalendarSyncService.cs" />
+    <Compile Include="Calendars\Events\Data\CalendarEventAttendee.cs" />
+    <Compile Include="Common\ObjectCopier.cs" />
+    <Compile Include="Common\OlsonTimeZone.cs" />
+    <Compile Include="Configuration\Calendars\FileBasedCalendarConfigurationRetriever.cs" />
+    <Compile Include="CalendarType.cs" />
+    <Compile Include="Configuration\Calendars\ExchangeCalendarConfiguration.cs" />
+    <Compile Include="Configuration\Calendars\GoogleCalendarConfiguration.cs" />
+    <Compile Include="Configuration\Calendars\ICalendarConfiguration.cs" />
+    <Compile Include="Configuration\Calendars\ICalendarConfigurationRetriever.cs" />
+    <Compile Include="Configuration\Services\FileBasedServiceConfigurationRetriever.cs" />
+    <Compile Include="Configuration\Services\GoogleServiceConfiguration.cs" />
+    <Compile Include="Configuration\Services\IServiceConfigurationRetriever.cs" />
+    <Compile Include="Configuration\Services\IServiceConfiguration.cs" />
+    <Compile Include="Configuration\Synchronization\FileBasedSynchronizationConfigurationReaderWriter.cs" />
+    <Compile Include="Configuration\Synchronization\SynchronizationConfiguration.cs" />
+    <Compile Include="Configuration\Synchronization\ISynchronizationConfiguration.cs" />
+    <Compile Include="Configuration\Synchronization\ISynchronizationConfigurationReaderWriter.cs" />
+    <Compile Include="ICalendarSynchronizationWorker.cs" />
+    <Compile Include="ICalendarSynchronizationWorkerFactory.cs" />
+    <Compile Include="ICalendarSyncService.cs" />
+    <Compile Include="Synchronization\CalendarEventSynchronizationKey.cs" />
+    <Compile Include="Synchronization\CalendarEventSynchronizer.cs" />
+    <Compile Include="Calendars\Events\CalendarEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Calendars\Events\ICalendarEvent.cs" />
+    <Compile Include="Calendars\Factories\ExchangeCalendarFactory.cs" />
+    <Compile Include="Calendars\Factories\GoogleCalendarFactory.cs" />
+    <Compile Include="Calendars\ICalendar.cs" />
+    <Compile Include="Calendars\Factories\ICalendarFactory.cs" />
+    <Compile Include="Calendars\Transformers\ExchangeCalendarEventTransformer.cs" />
+    <Compile Include="Calendars\Transformers\GoogleCalendarEventTransformer.cs" />
+    <Compile Include="Calendars\Transformers\ICalendarEventTransformer.cs" />
+    <Compile Include="Calendars\ExchangeCalendar.cs" />
+    <Compile Include="Calendars\GoogleCalendar.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SynchronizationType.cs" />
+    <Compile Include="Synchronization\ICalendarEventSynchronizer.cs" />
+    <Compile Include="Synchronization\SynchronizedEventLists.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Google.Apis">
+      <HintPath>..\nuget-packages\Google.Apis.1.8.1\lib\net40\Google.Apis.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth">
+      <HintPath>..\nuget-packages\Google.Apis.Auth.1.8.1\lib\net40\Google.Apis.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices">
+      <HintPath>..\nuget-packages\Google.Apis.Auth.1.8.1\lib\net40\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Calendar.v3">
+      <HintPath>..\nuget-packages\Google.Apis.Calendar.v3.1.8.1.880\lib\portable-net4+sl4+wp71+win8\Google.Apis.Calendar.v3.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Core">
+      <HintPath>..\nuget-packages\Google.Apis.Core.1.8.1\lib\portable-net4+sl4+wp71+win8\Google.Apis.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.PlatformServices">
+      <HintPath>..\nuget-packages\Google.Apis.1.8.1\lib\net40\Google.Apis.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\nuget-packages\log4net.2.0.0\lib\net40-client\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Microsoft.Exchange.WebServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.WebServices.Auth">
+      <HintPath>..\bin\Microsoft.Exchange.WebServices.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\nuget-packages\Microsoft.Bcl.Async.1.0.16\lib\net45\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\nuget-packages\Microsoft.Bcl.Async.1.0.16\lib\net45\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\nuget-packages\Newtonsoft.Json.5.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\nuget-packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Net.Http.Primitives, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\nuget-packages\Microsoft.Net.Http.2.1.10\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
+    <Reference Include="Zlib.Portable">
+      <HintPath>..\nuget-packages\Zlib.Portable.1.9.2\lib\portable-net4+sl4+wp71+win8\Zlib.Portable.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ServiceConfigurations>
+  <GoogleServiceConfiguration>
+    <ApiClientId>18684654138435468-08615357vtq9e8qfasef6cuvhhm5j.apps.googleusercontent.com</ApiClientId>
+    <ApiClientSecret>teislfje_flielsfes</ApiClientSecret>
+  </GoogleServiceConfiguration>
+</ServiceConfigurations>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SynchronizationConfigurations>
+  <SynchronizationConfiguration>
+    <SourceCalendarConfigurationId>BADF000B-DCEA-4793-9223-28D329350BF1</SourceCalendarConfigurationId>
+    <DestinationCalendarConfigurationId>EDCEE0FF-C51A-4667-9876-498AA7C99B2E</DestinationCalendarConfigurationId>
+    <DaysInPastToSync>2</DaysInPastToSync>
+    <DaysInFutureToSync>10</DaysInFutureToSync>
+    <SynchronizationType>OneWay_SourceToDestination</SynchronizationType>
+    <MinutesBetweenSynchronization>15</MinutesBetweenSynchronization>
+    <LastSynchronization></LastSynchronization>
+    <LastSyncBehindDate></LastSyncBehindDate>
+    <LastSyncAheadDate></LastSyncAheadDate>
+  </SynchronizationConfiguration>
+</SynchronizationConfigurations>

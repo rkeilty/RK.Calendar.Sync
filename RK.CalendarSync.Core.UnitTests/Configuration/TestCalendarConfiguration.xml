@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Calendars>
+  <GoogleCalendarServiceConfiguration>
+    <CalendarId>EDCEE0FF-C51A-4667-9876-498AA7C99B2E</CalendarId>
+    <UserName>john.doe@gmail.com</UserName>
+    <CalendarId>fjislefielsfjiesf</CalendarId>
+  </GoogleCalendarServiceConfiguration>
+  <ExchangeCalendarServiceConfiguration>
+    <CalendarId>BADF000B-DCEA-4793-9223-28D329350BF1</CalendarId>
+    <UserName>john.doe@exchange.com</UserName>
+    <Password></Password>
+    <UseDomainCredentials>true</UseDomainCredentials>
+    <Endpoint>https://webmail1.exchange.com/endpoint.asmx</Endpoint>
+    <ExchangeVersion>Exchange2010</ExchangeVersion>
+  </ExchangeCalendarServiceConfiguration>
+</Calendars>

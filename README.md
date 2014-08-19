@@ -1,0 +1,1 @@
+Simple calendar sync application, verion 0.0.1 supports Exchange --> Google one way syncs.
