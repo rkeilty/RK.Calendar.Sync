@@ -66,10 +66,6 @@ namespace RK.CalendarSync.Core
             // Retrieve any service configurations (Google API credentials, etc.)
             var serviceConfigs = _serviceConfigurationRetriever.GetServiceConfigurations();
 
-            // Start the sync-saver thread
-            _syncConfigSaveThread = new Thread(SaveSynchronizationWorker);
-            _syncConfigSaveThread.Start();
-
             // Given sync configurations, service level credentials, create the calendars and store them in a list.
             foreach (var syncConfig in syncConfigs)
             {
@@ -87,6 +83,10 @@ namespace RK.CalendarSync.Core
                 syncThread.Start();
                 _syncWorkerThreads.Add(syncThread);
             }
+
+            // Start the sync-saver thread
+            _syncConfigSaveThread = new Thread(SaveSynchronizationWorker);
+            _syncConfigSaveThread.Start();
         }
 
 
