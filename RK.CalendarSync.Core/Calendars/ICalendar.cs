@@ -18,6 +18,7 @@ namespace RK.CalendarSync.Core.Calendars
         /// Given a list of calendar events, syncronizes the events marked as dirty.
         /// </summary>
         /// <param name="calendarEvents"></param>
-        void SynchronizeDirtyEvents(IEnumerable<ICalendarEvent> calendarEvents);
+        /// <returns>Whether the sync was successful</returns>
+        bool SynchronizeDirtyEvents(IEnumerable<ICalendarEvent> calendarEvents);
     }
 }

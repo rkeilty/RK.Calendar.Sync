@@ -44,7 +44,7 @@ namespace RK.CalendarSync.Core.Calendars
         public ExchangeCalendar(ExchangeService exchangeService)
         {
             _exchangeService = exchangeService;
-            _calendarEventTransformer = new ExchangeCalendarEventTransformer(_exchangeService.TimeZone);
+            _calendarEventTransformer = new ExchangeCalendarEventTransformer(_exchangeService);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace RK.CalendarSync.Core.Calendars
         /// Given a list of calendar events, syncronizes the events marked as dirty.
         /// </summary>
         /// <param name="calendarEvents"></param>
-        public void SynchronizeDirtyEvents(IEnumerable<ICalendarEvent> calendarEvents)
+        public bool SynchronizeDirtyEvents(IEnumerable<ICalendarEvent> calendarEvents)
         {
             throw new NotImplementedException();
         }

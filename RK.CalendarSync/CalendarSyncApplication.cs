@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Microsoft.Win32;
+using NLog;
 using System;
 using System.Drawing;
 using System.Threading;
@@ -9,6 +10,8 @@ namespace RK.CalendarSync
 {
     public class CalendarSyncApplication : Form
     {
+        private const string APPLICATION_NAME = "RK Calendar Sync";
+
         /// <summary>
         /// Logger for the class
         /// </summary>
@@ -42,6 +45,7 @@ namespace RK.CalendarSync
 
         private NotifyIcon _trayIcon;
         private ContextMenu _trayMenu;
+        private MenuItem _trayItemRunsOnLogin;
         private CalendarSyncService _calendarSyncService;
 
         public CalendarSyncApplication()
@@ -49,23 +53,26 @@ namespace RK.CalendarSync
             // Setup the shutdown action
             Application.ApplicationExit += OnApplicationExit;
 
-
             // Create the exit icon.
             _trayMenu = new ContextMenu();
+
+            // Add whether it runs at startup
+            _trayItemRunsOnLogin = new MenuItem("Run on login", OnRunOnLoginButtonClick);
+            _trayItemRunsOnLogin.Checked = ApplicationRunsAtLogon;
+            _trayMenu.MenuItems.Add(_trayItemRunsOnLogin);
+
+            // Add the "Exit" menu item
             _trayMenu.MenuItems.Add("Exit", OnTrayExit);
 
-            // Create a tray icon. In this example we use a
-            // standard system icon for simplicity, but you
-            // can of course use your own custom icon too.
+            // Create a tray icon, with a calendar icon
             _trayIcon = new NotifyIcon
                 {
-                    Text = "RK Calendar Sync",
-                    Icon = new Icon(SystemIcons.Application, 40, 40),
+                    Text = APPLICATION_NAME,
+                    Icon = new Icon("CalendarTrayIcon.ico", 40, 40),
                     ContextMenu = _trayMenu,
                     Visible = true,
                     
                 };
-
             // Spin up a Calendar Sync Service
             _calendarSyncService = new CalendarSyncService();
         }
@@ -85,12 +92,32 @@ namespace RK.CalendarSync
             base.OnLoad(e);
         }
 
-
+        /// <summary>
+        /// What to do when the tray exits.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnTrayExit(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        /// <summary>
+        /// What to do when the tray exits.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnRunOnLoginButtonClick(object sender, EventArgs e)
+        {
+            // Try to change the applications startup settings
+            ApplicationRunsAtLogon = !_trayItemRunsOnLogin.Checked;
+            _trayItemRunsOnLogin.Checked = ApplicationRunsAtLogon;
+        }
+
+        /// <summary>
+        /// Helper method to show/hide winform app.
+        /// </summary>
+        /// <param name="show"></param>
         private void ShowWindowAndTaskbar(bool show)
         {
             if (show)
@@ -127,6 +154,37 @@ namespace RK.CalendarSync
 
             base.Dispose(isDisposing);
         }
+
+
+        /// <summary>
+        /// Checks to see if there is a registry entry indicating sync should start at system logon.
+        /// </summary>
+        private bool ApplicationRunsAtLogon
+        {
+            get
+            {
+                // The path to the key where Windows looks for startup applications
+                var registryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", false);
+                return registryKey != null && registryKey.GetValue(APPLICATION_NAME) != null;
+            }
+            set
+            {
+                // The path to the key where Windows looks for startup applications
+                var registryKey =
+                    Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true) ??
+                    Registry.CurrentUser.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
+
+                if (value)
+                {
+                    registryKey.SetValue(APPLICATION_NAME, Application.ExecutablePath);
+                }
+                else
+                {
+                    registryKey.DeleteValue(APPLICATION_NAME, false);
+                }
+            }
+        }
+
         /// <summary>
         /// Log any unhandled applications thrown from a thread.
         /// </summary>

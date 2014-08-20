@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Google;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
+using NLog;
 using RK.CalendarSync.Core.Calendars.Events;
 using RK.CalendarSync.Core.Calendars.Transformers;
 using RK.CalendarSync.Core.Common;
@@ -11,11 +13,20 @@ namespace RK.CalendarSync.Core.Calendars
 {
     internal class GoogleCalendar : ICalendar
     {
+        /// <summary>
+        /// Logger for the class
+        /// </summary>
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
+
         private readonly CalendarService _calendarService;
         private readonly string _calendarId;
         private readonly TimeZoneInfo _defaultCalendarTimeZone;
         private readonly ICalendarEventTransformer<Event> _calendarEventTransformer;
-        private static readonly int MILLISECONDS_BETWEEN_UPDATE_REQUESTS = 100;
+
+        /// <summary>
+        /// Google seems to have some throttling issues, they don't really like anything faster than 5 requests/second/user.
+        /// </summary>
+        private static readonly int MILLISECONDS_BETWEEN_UPDATE_REQUESTS = 200;
 
         /// <summary>
         /// Constructor needs access to the calendar service object, and calendar ID, it will be accessing.
@@ -73,41 +84,52 @@ namespace RK.CalendarSync.Core.Calendars
         /// Given a list of calendar events, syncronizes the events marked as dirty.
         /// </summary>
         /// <param name="calendarEvents"></param>
-        public void SynchronizeDirtyEvents(IEnumerable<ICalendarEvent> calendarEvents)
+        public bool SynchronizeDirtyEvents(IEnumerable<ICalendarEvent> calendarEvents)
         {
-            foreach (var calendarEvent in calendarEvents)
+            try
             {
-                if (calendarEvent.IsDirty)
+                foreach (var calendarEvent in calendarEvents)
                 {
-                    Thread.Sleep(MILLISECONDS_BETWEEN_UPDATE_REQUESTS);
-
-                    var googleCalendarEvent = _calendarEventTransformer.ConvertFromCalendarEvent(calendarEvent);
-
-                    // Easiest action is to first see if it's marked as deleted
-                    if (calendarEvent.DeleteOnSync)
+                    if (calendarEvent.IsDirty)
                     {
-                        DeleteCalendarEvent(googleCalendarEvent);
-                        continue;
-                    }
+                        Thread.Sleep(MILLISECONDS_BETWEEN_UPDATE_REQUESTS);
 
-                    // Now see if we've marked for undeletion
-                    if (calendarEvent.UnDeleteOnSync)
-                    {
-                        UndeleteCalendarEvent(googleCalendarEvent);
-                        continue;
-                    }
+                        var googleCalendarEvent = _calendarEventTransformer.ConvertFromCalendarEvent(calendarEvent);
 
-                    // Now see if it's new
-                    if (calendarEvent.CreateOnSync)
-                    {
-                        CreateNewCalendarEvent(googleCalendarEvent);
-                        continue;
-                    }
+                        // Easiest action is to first see if it's marked as deleted
+                        if (calendarEvent.DeleteOnSync)
+                        {
+                            DeleteCalendarEvent(googleCalendarEvent);
+                            continue;
+                        }
 
-                    // Otherwise, assume an update
-                    UpdateCalendarEvent(googleCalendarEvent);
+                        // Now see if we've marked for undeletion
+                        if (calendarEvent.UnDeleteOnSync)
+                        {
+                            UndeleteCalendarEvent(googleCalendarEvent);
+                            continue;
+                        }
+
+                        // Now see if it's new
+                        if (calendarEvent.CreateOnSync)
+                        {
+                            CreateNewCalendarEvent(googleCalendarEvent);
+                            continue;
+                        }
+
+                        // Otherwise, assume an update
+                        UpdateCalendarEvent(googleCalendarEvent);
+                    }
                 }
             }
+            catch (GoogleApiException googleEx)
+            {
+                // Often Google will have API exceptions, in which case we should indicate the sync failed and instantly return
+                LOGGER.Error("Google calendar API error", googleEx);
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

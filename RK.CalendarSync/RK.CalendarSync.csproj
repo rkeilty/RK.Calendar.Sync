@@ -79,6 +79,9 @@
     <Content Include="CalendarConfigurations.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="CalendarTrayIcon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ServiceConfigurations.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

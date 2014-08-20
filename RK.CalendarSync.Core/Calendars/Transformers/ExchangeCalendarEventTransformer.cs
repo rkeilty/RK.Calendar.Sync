@@ -12,10 +12,20 @@ namespace RK.CalendarSync.Core.Calendars.Transformers
     /// </summary>
     internal class ExchangeCalendarEventTransformer : ICalendarEventTransformer<Appointment>
     {
+        /// <summary>
+        /// Default time-zone for the calendar service.
+        /// </summary>
         private readonly TimeZoneInfo _defaultTimeZone;
-        public ExchangeCalendarEventTransformer(TimeZoneInfo defaultTimeZone)
+
+        /// <summary>
+        /// Some of the underlying objects require the exchange service object directly (like the Appointment constructor)
+        /// </summary>
+        private readonly ExchangeService _exchangeService;
+
+        public ExchangeCalendarEventTransformer(ExchangeService exchangeService)
         {
-            _defaultTimeZone = defaultTimeZone;
+            _defaultTimeZone = exchangeService.TimeZone;
+            _exchangeService = exchangeService;
         }
 
         public ICalendarEvent ConvertToCalendarEvent(Appointment exchangeCalendarEvent)

@@ -158,18 +158,24 @@ namespace RK.CalendarSync.Core
             if (_synchronizationConfiguration.SynchronizationType == SynchronizationType.BiDirectional
                 || _synchronizationConfiguration.SynchronizationType == SynchronizationType.OneWay_SourceToDestination)
             {
-                _destinationCalendar.SynchronizeDirtyEvents(synchronizedEvents.DestinationEventList);
-                if (_stopRequested)
+                // See if sync is successful
+                if (!_destinationCalendar.SynchronizeDirtyEvents(synchronizedEvents.DestinationEventList))
                 {
                     return false;
                 }
             }
 
+            // Before we sync the next set see if a stop is requested.
+            if (_stopRequested)
+            {
+                return false;
+            }
+
             if (_synchronizationConfiguration.SynchronizationType == SynchronizationType.BiDirectional
                 || _synchronizationConfiguration.SynchronizationType == SynchronizationType.OneWay_DestinationToSource)
             {
-                _sourceCalendar.SynchronizeDirtyEvents(synchronizedEvents.SourceEventList);
-                if (_stopRequested)
+                // See if sync is successful
+                if (!_sourceCalendar.SynchronizeDirtyEvents(synchronizedEvents.SourceEventList))
                 {
                     return false;
                 }
