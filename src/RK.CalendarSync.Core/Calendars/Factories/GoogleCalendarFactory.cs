@@ -2,6 +2,7 @@
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Services;
+using RK.CalendarSync.Core.Calendars.Services.Google;
 using RK.CalendarSync.Core.Configuration.Calendars;
 using RK.CalendarSync.Core.Configuration.Services;
 
@@ -12,7 +13,7 @@ namespace RK.CalendarSync.Core.Calendars.Factories
         private readonly GoogleCalendarConfiguration _calendarConfiguration;
         private readonly GoogleServiceConfiguration _serviceConfiguration;
 
-        private CalendarService _calendarService;
+        private IGoogleCalendarService _calendarService;
 
         public GoogleCalendarFactory(GoogleCalendarConfiguration calendarConfiguration, GoogleServiceConfiguration serviceConfiguration)
         {
@@ -44,11 +45,14 @@ namespace RK.CalendarSync.Core.Calendars.Factories
 
 
             // Create the service.
-            _calendarService = new CalendarService(new BaseClientService.Initializer()
+            var calendarService = new CalendarService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credentials,
                 ApplicationName = "RK Calendar Sync",
             });
+
+            // Drop it in our wrapper.
+            _calendarService = new GoogleCalendarService(calendarService);
         }
     }
 }

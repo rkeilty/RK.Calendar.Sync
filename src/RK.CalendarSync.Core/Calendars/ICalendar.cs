@@ -19,6 +19,6 @@ namespace RK.CalendarSync.Core.Calendars
         /// </summary>
         /// <param name="calendarEvents"></param>
         /// <returns>Whether the sync was successful</returns>
-        bool SynchronizeDirtyEvents(IEnumerable<ICalendarEvent> calendarEvents);
+        void SynchronizeDirtyEvents(IEnumerable<ICalendarEvent> calendarEvents);
     }
 }
