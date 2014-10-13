@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Google.Apis.Calendar.v3.Data;
 using RK.CalendarSync.Core.Calendars.Events;
 using RK.CalendarSync.Core.Calendars.Events.Data;
@@ -126,7 +127,12 @@ namespace RK.CalendarSync.Core.Calendars.Transformers
                 calendarEvent.OptionalAttendees.Select(
                     a => new EventAttendee() { DisplayName = a.DisplayName, Email = a.Email, Optional = true }).ToList();
 
-            googleCalendarEvent.Attendees = googleRequiredAttendees.Union(googleOptionalAttendees).ToList();
+            // Extremely rudimentary email validation (basically is has an @ symbol and ends with 2-4 characters.)  Google API doesn't like attendeeds
+            // that don't have an email address.
+            googleCalendarEvent.Attendees =
+                googleRequiredAttendees.Union(googleOptionalAttendees)
+                                       .Where(a => a.Email != null && Regex.IsMatch(a.Email, @"^.*@.*(\.[a-z]{2,4})$"))
+                                       .ToList();
 
             // If our object has a domain specific ID, set it.
             if (!string.IsNullOrEmpty(calendarEvent.DomainSpecificEventId))

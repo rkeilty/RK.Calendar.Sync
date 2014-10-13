@@ -1,9 +1,11 @@
 # Ivy & nuget folders
 /nuget-packages/
+src/nuget-packages/
 ivy-*.xml
 
 # Output directories (unit tests, published files, code coverage, etc...)
 /output/
+src/output/
 
 # User-specific files
 *.suo

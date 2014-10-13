@@ -16,9 +16,14 @@ namespace RK.CalendarSync.Core
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// If we fail to sync, wait 10 minutes before retrying.
+        /// If we fail to sync, wait 2.5 minutes before retrying.
         /// </summary>
-        private const int DEFAULT_MILLISECOND_WAIT_TIME_ON_SYNC_FAIL = 600000;
+        private const int DEFAULT_MILLISECOND_WAIT_TIME_ON_SYNC_FAIL = 150000;
+
+        /// <summary>
+        /// At a maximum, wait 6 hours.
+        /// </summary>
+        private const int MAX_MILLISECOND_WAIT_TIME_ON_SYNC_FAIL = 216000000;
 
         private readonly ICalendar _sourceCalendar;
         private readonly ICalendar _destinationCalendar;
@@ -107,6 +112,9 @@ namespace RK.CalendarSync.Core
                     // just do an exponential backoff (failures are most likely due to a service resource being down.)
                     millisecondsBeforeNextSync = DEFAULT_MILLISECOND_WAIT_TIME_ON_SYNC_FAIL*
                                                  (int) Math.Pow(2, numberOfSequentialFailures);
+                    millisecondsBeforeNextSync = millisecondsBeforeNextSync > MAX_MILLISECOND_WAIT_TIME_ON_SYNC_FAIL
+                                                     ? MAX_MILLISECOND_WAIT_TIME_ON_SYNC_FAIL
+                                                     : millisecondsBeforeNextSync;
 
                     numberOfSequentialFailures++;
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Google;
 using Google.Apis.Calendar.v3.Data;
 using NLog;
 using RK.CalendarSync.Core.Calendars.Events;
@@ -25,8 +24,10 @@ namespace RK.CalendarSync.Core.Calendars
 
         /// <summary>
         /// Google seems to have some throttling issues, they don't really like anything faster than 5 requests/second/user.
+        /// Actually, they seem to now and then even have issues with that, so it would be great to have some context in this class
+        /// which knows when to back off on number of requests per second...  This will have to suffice for now.
         /// </summary>
-        private static readonly int MILLISECONDS_BETWEEN_UPDATE_REQUESTS = 200;
+        private static readonly int MILLISECONDS_BETWEEN_UPDATE_REQUESTS = 5000;
 
         /// <summary>
         /// Constructor needs access to the calendar service object, and calendar ID, it will be accessing.
